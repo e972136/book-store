@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
+
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping(path="/books")
@@ -16,6 +20,7 @@ public class BookController {
 
     @GetMapping
     List<Book> allBooks(){
+        System.err.println(" allBooks: ");
         return bookService.todosLosLibros();
     }
 
@@ -27,6 +32,12 @@ public class BookController {
     @PutMapping(path = "{id}")
     Book updateBook(@PathVariable("id") Integer id, @RequestBody Book book){
         return bookService.update(id,book);
+    }
+    
+    @PatchMapping(path = "{id}")
+    Book patch(@PathVariable Integer id, @RequestBody Map<Object,Object> fields){
+        System.err.println(" patch: "+id);
+        return bookService.patch(id,fields);
     }
 
     @DeleteMapping(path = "{id}")
