@@ -1,13 +1,13 @@
 
 #### get all books
-get http://localhost:8080/books
+get http://localhost:8000/books
 
 
 ## insert into book(id,title,description,stock,sale_price,available) values(1,'cien anios','my book',5,1.5,'true');
 ## insert into book(id,title,description,stock,sale_price,available) values(2,'macros','espacio',5,1.5,'true');
 
 #### post book
-post http://localhost:8080/books
+post http://localhost:8000/books
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 
 #### put
-put http://localhost:8080/books/1
+put http://localhost:8000/books/1
 Content-Type: application/json
 
 {
@@ -33,4 +33,13 @@ Content-Type: application/json
 
 
 #### delete
-delete http://localhost:8080/books/1
+delete http://localhost:8000/books/1
+
+
+#### patch
+patch http://localhost:8000/books/1
+Content-Type: application/json
+
+{
+    "title": "gashapar"
+}
