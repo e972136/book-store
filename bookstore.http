@@ -20,7 +20,7 @@ Content-Type: application/json
 
 
 #### put
-put http://localhost:8080/books/6
+put http://localhost:8080/books/1
 Content-Type: application/json
 
 {
@@ -30,3 +30,7 @@ Content-Type: application/json
     "salePrice": 450.50,
     "available": true
 }
+
+
+#### delete
+delete http://localhost:8080/books/1

@@ -30,4 +30,8 @@ public class BookService {
         bookObtain.setTitle(book.getTitle());
         return book;
     }
+
+    public void delete(Integer id) {
+        bookRepository.deleteById(id);
+    }
 }
