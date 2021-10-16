@@ -1,0 +1,32 @@
+
+#### get all books
+get http://localhost:8080/books
+
+
+## insert into book(id,title,description,stock,sale_price,available) values(1,'cien anios','my book',5,1.5,'true');
+## insert into book(id,title,description,stock,sale_price,available) values(2,'macros','espacio',5,1.5,'true');
+
+#### post book
+post http://localhost:8080/books
+Content-Type: application/json
+
+{
+    "title": "c",
+    "description": "otro libro",
+    "stock": 3,
+    "salePrice": 450.50,
+    "available": true
+}
+
+
+#### put
+put http://localhost:8080/books/6
+Content-Type: application/json
+
+{
+    "title": "GASHPAR",
+    "description": "otro libro",
+    "stock": 3,
+    "salePrice": 450.50,
+    "available": true
+}
