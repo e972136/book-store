@@ -13,5 +13,14 @@ create table sale(
    bookId integer,
    customerEmail varchar(50),
    price double,
+   dateOfSale varchar(11) default '1900-01-01',
    constraint pk_sale_id primary key (id)
+);
+
+create table likes(
+    id integer identity not null,
+    bookId integer,
+    customerEmail varchar(50),
+    likes integer,
+    constraint pk_likes_id primary key (id)
 );

@@ -1,2 +1,2 @@
-insert into Book (id,title,description,stock,sale_price,available) values (1,'cien anios','my book',5,1.5,'true');
-insert into Book (id,title,description,stock,sale_price,available) values (2,'macros','espacio',5,1.5,'true');
+insert into Book (title,description,stock,sale_price,available) values ('cien anios','my book',5,1.5,'true');
+insert into Book (title,description,stock,sale_price,available) values ('macros','espacio',5,1.5,'true');
