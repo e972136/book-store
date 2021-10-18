@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 
 
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,14 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping
+   /* @GetMapping
     List<Book> allBooks(){
         System.err.println(" allBooks: ");
         return bookService.todosLosLibros();
+    }*/
+    @GetMapping
+    Map<Object,Object> allBooksPage(@RequestBody Map<String,Object> fields){
+        return bookService.allBooksPage(fields);
     }
 
     @PostMapping
@@ -35,8 +40,7 @@ public class BookController {
     }
     
     @PatchMapping(path = "{id}")
-    Book patch(@PathVariable Integer id, @RequestBody Map<Object,Object> fields){
-        System.err.println(" patch: "+id);
+    Book patch(@PathVariable Integer id, @RequestBody Map<Object,Object> fields){        
         return bookService.patch(id,fields);
     }
 
