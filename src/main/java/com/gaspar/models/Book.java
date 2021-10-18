@@ -1,5 +1,6 @@
 package com.gaspar.models;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="book")
-public class Book {
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue
