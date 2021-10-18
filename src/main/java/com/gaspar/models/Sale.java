@@ -6,6 +6,7 @@
 package com.gaspar.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,4 +31,5 @@ public class Sale  implements Serializable{
    Integer bookId;
    String customerEmail;
    Double price;
+   String dateOfSale;
 }
