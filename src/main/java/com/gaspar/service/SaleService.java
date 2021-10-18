@@ -6,8 +6,11 @@
 package com.gaspar.service;
 
 import com.gaspar.models.Book;
+import com.gaspar.models.Sale;
 import com.gaspar.repository.BookRepository;
 import com.gaspar.repository.SaleRepository;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,29 +29,52 @@ public class SaleService {
     private final SaleRepository repository;
     private final BookService bookService;
 
+  
+    
+    
     public Map<String, Object> newSale(Map<String, Object> fields) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Map<String, Object> resp = new HashMap<>();
-        Integer bookId = (Integer)fields.get("bookId");
-        Optional<Book> findById = bookService.getBook(bookId);
-        if(!findById.isPresent()){            
-            resp.put("Respuesta", "Id No Existe");
+        Integer bookId = (Integer)fields.getOrDefault("bookId",null);
+        if(bookId == null){                    
+            resp.put("Error", "No esta el campo bookId");
             return resp;
         }
-        Book get = findById.get();
-        if(!get.getAvailable()){
-            resp.put("Respuesta", "Libro no disponible");
+        
+        String customerEmail = (String)fields.getOrDefault("customerEmail",null);
+        if(customerEmail==null){
+             resp.put("Error", "No esta el campo customerEmail");
             return resp;           
         }
-        if(get.getStock()<=0){
-            resp.put("Respuesta", "No hay Existencia");
+        
+        Optional<Book> findById = bookService.getBook(bookId);
+        if(!findById.isPresent()){            
+            resp.put("Error", "Id No Existe");
+            return resp;
+        }
+        Book book = findById.get();
+        
+        if(!book.getAvailable()){
+            resp.put("Error", "Libro no disponible");
             return resp;           
         }
-        get.setStock(get.getStock()-1);
-        bookService.update(get.getId(), get);
-        resp.put("bookId", get.getId());
-        resp.put("customerEmail", "xxx");
-        resp.put("price", get.getSalePrice());   
+        if(book.getStock()<=0){
+            resp.put("Error", "No hay Existencia");
+            return resp;           
+        }
+        book.setStock(book.getStock()-1);
+        bookService.update(book.getId(), book);
+        resp.put("bookId", book.getId());
+        resp.put("customerEmail", customerEmail);
+        resp.put("price", book.getSalePrice());   
+        Sale sale = new Sale();
+        sale.setBookId(book.getId());
+        sale.setCustomerEmail(customerEmail);
+        sale.setPrice(book.getSalePrice());
+        LocalDate date = LocalDate.now(); 
+        sale.setDateOfSale(date.toString());
+        repository.save(sale);  
+
         return resp;
     }
     

@@ -46,7 +46,7 @@ public class BookService {
     public Book patch(Integer id, Map<Object, Object> fields) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
-        System.err.println(" encontrado: "+bookObtain);
+        //System.err.println(" encontrado: "+bookObtain);
         if(bookObtain!=null){
             fields.forEach((key,value)->{
                 Field findField = ReflectionUtils.findField(Book.class, key.toString());
