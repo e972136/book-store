@@ -1,14 +1,19 @@
 
 #### get all books
 get http://localhost:8000/books
+Content-Type: application/json
 
+{
+  "page":"0",
+  "size":"12"
+}
 
 #### post book
 post http://localhost:8000/books
 Content-Type: application/json
 
 {
-    "title": "a",
+    "title": "g",
     "description": "otro libro",
     "stock": 3,
     "salePrice": 450.50,
