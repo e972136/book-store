@@ -38,6 +38,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public Optional<Book> getBook(Integer id){
+        return bookRepository.findById(id);
+    }
+    
     @Transactional
     public Book patch(Integer id, Map<Object, Object> fields) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
