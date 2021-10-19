@@ -51,12 +51,13 @@ public class BookService {
     }
 
     @Transactional
-    public Book patch(Integer id, Map<Object, Object> fields) {
+    public Book patch(Integer id, Map<Object, Object> fields) {        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
         //System.err.println(" encontrado: "+bookObtain);
         if (bookObtain != null) {
             fields.forEach((key, value) -> {
+                if(key.equals("id")) return;
                 Field findField = ReflectionUtils.findField(Book.class, key.toString());
                 findField.setAccessible(true);
                 ReflectionUtils.setField(findField, bookObtain, value);
@@ -71,18 +72,14 @@ public class BookService {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Integer page = 0;
         Integer size = 2;
-        String pageStr = (String) fields.getOrDefault("page", null);
-        if (pageStr != null) {
-            page = Integer.valueOf(pageStr) - 1;
+        page = (Integer) fields.getOrDefault("page", null);
+        if (page != null) {
+            page = page - 1;
         }
         if (page < 0) {
             page = 0;
         }
-        String sizeStr = (String) fields.getOrDefault("size", null);
-
-        if (sizeStr != null) {
-            size = Integer.valueOf(sizeStr);
-        }
+        size = (Integer) fields.getOrDefault("size", null);        
 
         if (size <= 0) {
             size = 12;
@@ -91,7 +88,7 @@ public class BookService {
         String msgSorg = null;
         String isSortBy = (String) fields.getOrDefault("sort", null);
         Sort sortBy = Sort.by("title");
-        ;
+        
         if (isSortBy != null) {
             Field findField = ReflectionUtils.findField(Book.class, isSortBy);
             if (findField != null) {

@@ -5,6 +5,7 @@
  */
 package com.gaspar.service;
 
+import com.gaspar.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
 import com.gaspar.repository.BookRepository;
@@ -45,6 +46,11 @@ public class SaleService {
         if(customerEmail==null){
              resp.put("Error", "No esta el campo customerEmail");
             return resp;           
+        }
+        
+        if(!Utils.correoValido(customerEmail)){
+            resp.put("Error", "Correo invalido "+customerEmail);
+            return resp;
         }
         
         Optional<Book> findById = bookService.getBook(bookId);

@@ -5,6 +5,7 @@
  */
 package com.gaspar.service;
 
+import com.gaspar.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Likes;
 import com.gaspar.models.Sale;
@@ -15,6 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -62,24 +65,30 @@ public class LikesService {
             respuesta.put("Error", "No esta el campo customerEmail");
             return respuesta;
         }       
+        
+        if(!Utils.correoValido(customerEmail)){
+            respuesta.put("Error", "Correo invalido "+customerEmail);
+            return respuesta;
+        }
+        
+        
         respuesta.put("bookId", bookId);        
         
+        List<String> lista;
         Optional<Likes> findById = repository.findById(bookId);
         if(findById.isPresent()){           
             Likes like = findById.get();
             update(like.getBookId(),customerEmail);
             respuesta.put("likes", like.getLikes());    
             String[] split = like.getCustomerEmail().split(";");
-            List<String> l = Arrays.asList(split);
-            respuesta.put("customers",l);
-        }else{        
-
+            lista = Arrays.asList(split);            
+        }else{   
             Likes save = repository.save(new Likes(bookId,customerEmail,1));
             respuesta.put("likes", save.getLikes());   
-            List<String> l = new ArrayList<>();
-            l.add(customerEmail);
-            respuesta.put("customers",l);
+             lista = new ArrayList<>();
+            lista.add(customerEmail);            
         }
+        respuesta.put("customers",lista);
         
         return respuesta;        
     }
