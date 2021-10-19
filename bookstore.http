@@ -4,8 +4,8 @@ get http://localhost:8000/books
 Content-Type: application/json
 
 {
-  "page":"0",
-  "size":"12"
+  "page":"1",
+  "size":"5"
 }
 
 #### post book
@@ -26,7 +26,7 @@ put http://localhost:8000/books/1
 Content-Type: application/json
 
 {
-    "title": "GASHPAR",
+    "title": "GASH",
     "description": "otro libro",
     "stock": 3,
     "salePrice": 450.50,
@@ -53,4 +53,14 @@ Content-Type: application/json
 {
     "bookId": 1,
     "customerEmail": "gashapar"
+}
+
+
+####
+post http://localhost:8000/likes
+Content-Type: application/json
+
+{
+    "bookId": 1,
+    "customerEmail": "gaspari"
 }
