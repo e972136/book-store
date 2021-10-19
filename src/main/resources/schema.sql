@@ -18,9 +18,8 @@ create table sale(
 );
 
 create table likes(
-    id integer identity not null,
     bookId integer,
     customerEmail varchar(50),
-    likes integer,
-    constraint pk_likes_id primary key (id)
+    likes integer,    
+    constraint pk_likes_id primary key (bookId)
 );
