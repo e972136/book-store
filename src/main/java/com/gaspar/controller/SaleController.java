@@ -27,7 +27,12 @@ public class SaleController {
     
     @PostMapping
     ResponseEntity<Map<String,Object>> newSale(@RequestBody Map<String,Object> fields){
-        Map<String, Object> newSale = service.newSale(fields);
+        try {
+            Map<String, Object> newSale = service.newSale(fields);
         return new ResponseEntity<>(newSale,HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        
     }
 }

@@ -30,7 +30,11 @@ public class LikesController {
  
     @PostMapping
     ResponseEntity<Map<String,Object>> post(@RequestBody Map<String,Object> fields){
-        Map<String,Object> save = service.post(fields);
+        try {
+            Map<String,Object> save = service.post(fields);
         return new ResponseEntity<>(save,HttpStatus.CREATED);
+        } catch (Exception e) {
+             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }        
     }    
 }
