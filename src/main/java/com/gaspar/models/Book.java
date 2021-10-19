@@ -19,13 +19,13 @@ public class Book implements Serializable {
 
     @Id
     @GeneratedValue
-    Integer id;//`: identificador unico del libro
+    Integer id;
 
-    String title; //`: titulo del libro
-    String description; //`: informacion acerca del libro
-    Integer stock; //`: cuantos items de este libro estan disponibles
-    Double salePrice;//`: cuanto costara el libro
-    Boolean available; //`: indicador que muestra si el libro puede ser vendido
+    String title;
+    String description; 
+    Integer stock; 
+    Double salePrice;
+    Boolean available; 
     
     @Override
     public String toString(){
