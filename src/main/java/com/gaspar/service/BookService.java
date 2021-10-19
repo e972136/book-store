@@ -129,7 +129,7 @@ public class BookService {
         respuesta.put("numberOfElements", findAll.getNumberOfElements());
         respuesta.put("totalElements", findAll.getTotalElements());
         respuesta.put("totalPages", findAll.getTotalPages());
-        respuesta.put("number", findAll.getNumber());
+        respuesta.put("number", findAll.getNumber()+1);
         if (msgSorg != null) {
             respuesta.put("Error", msgSorg);
         }
