@@ -6,6 +6,8 @@
 package com.gaspar.repository;
 
 import com.gaspar.models.Book;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,8 +24,11 @@ public class BookRepositoryInit {
     
     @PostConstruct
     private void postConstruct() {
-        Book b = new Book(1,"title","descrip",10,10.5,true);       
-        repository.save(b);
+        List<Book> l = new ArrayList<>();
+        l.add(new Book(1,"Orgullo y prejuicio","de Jane Austen",2,10.5,true));
+        l.add(new Book(2,"Un mundo feliz","de Aldous Huxley",10,13.5,true));    
+        l.add(new Book(3,"1984","de George Orwell",1,11.5,false));       
+        repository.saveAll(l);        
     }    
 }
 
