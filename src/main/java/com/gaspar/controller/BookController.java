@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 
 
 import org.springframework.http.ResponseEntity;
 
 @RestController
+@Slf4j
 @RequestMapping(path="/books")
 @RequiredArgsConstructor
 public class BookController {
@@ -30,22 +33,33 @@ public class BookController {
     }
 
     @PostMapping
-    Book newBook(@RequestBody Book book){
-        return bookService.save(book);
+    ResponseEntity<Book> newBook(@RequestBody Book book){
+        Book save = bookService.save(book);
+        return new ResponseEntity<>(save,HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{id}")
-    Book updateBook(@PathVariable("id") Integer id, @RequestBody Book book){
-        return bookService.update(id,book);
+    ResponseEntity<Book> updateBook(@PathVariable("id") Integer id, @RequestBody Book book){
+        log.info("Request to update Book: {}", book);
+        Book update = bookService.update(id,book);
+        return new ResponseEntity<>(update,HttpStatus.OK);
     }
     
     @PatchMapping(path = "{id}")
-    Book patch(@PathVariable Integer id, @RequestBody Map<Object,Object> fields){        
-        return bookService.patch(id,fields);
+    ResponseEntity<Book> patch(@PathVariable Integer id, @RequestBody Map<Object,Object> fields){        
+        log.info("Request to patch Book: {}", fields);
+        Book book = bookService.patch(id,fields);
+        return new ResponseEntity<>(book,HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{id}")
-    void deleteBook(@PathVariable("id") Integer id){
-        bookService.delete(id);
+    ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id){
+        log.info("Request to delete Book: {}", id);
+        try{
+            bookService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }
