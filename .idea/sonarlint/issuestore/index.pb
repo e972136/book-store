@@ -13,3 +13,7 @@ g
 7src/test/java/com/gaspar/BookStoreApplicationTests.java,5\4\5453cf6846558cda3d701167a031a9eeabd25bec
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+g
+7src/main/java/com/gaspar/repository/BookRepository.java,7\6\76156a0d370f84fc98c6d4d2f2a846d0d0fde862
+b
+2src/main/java/com/gaspar/BookStoreApplication.java,b\3\b337acbed2bc8a563ef4dba97d3336e6d14d0d15

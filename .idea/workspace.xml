@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd0bcaab-6a02-43ab-b550-eefad5a92929" name="Changes" comment="Inicio">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookstore.http" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/BookController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/service/BookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/service/BookService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gaspar/controller/BookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gaspar/controller/BookController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gaspar/models/Book.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gaspar/models/Book.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/gaspar/service/BookService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gaspar/service/BookService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
