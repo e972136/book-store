@@ -7,6 +7,8 @@ package com.gaspar.controller;
 
 import com.gaspar.models.Likes;
 import com.gaspar.service.LikesService;
+
+import java.io.Serializable;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping(path="/likes")
 @RequiredArgsConstructor
-public class LikesController {
+public class LikesController implements Serializable {
     private final LikesService service;
  
     @PostMapping

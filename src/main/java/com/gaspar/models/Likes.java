@@ -5,14 +5,13 @@
  */
 package com.gaspar.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  *
@@ -23,10 +22,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="likes")
-public class Likes {
+public class Likes implements Serializable {
+
     @Id
-    @Column(name="bookId")
-    Integer bookId;
+    @GeneratedValue
+    Integer id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "book_id")
+    Book book;
+//    Integer bookId;
     String customerEmail;
     Integer likes;
 }

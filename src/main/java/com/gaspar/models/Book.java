@@ -1,14 +1,13 @@
 package com.gaspar.models;
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -19,14 +18,22 @@ public class Book implements Serializable {
 
     @Id
     @GeneratedValue
-    Integer id;
+    private Integer id;
 
-    String title;
-    String description; 
-    Integer stock; 
-    Double salePrice;
-    Boolean available; 
-    
+    private String title;
+    private String description;
+    private Integer stock;
+    private Double salePrice;
+    private Boolean available;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Sale> sales;
+
+
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Likes like;
+
     @Override
     public String toString(){
         return title+","+description+","+stock+","+salePrice+","+available;

@@ -78,15 +78,19 @@ public class LikesService {
         Optional<Likes> findById = repository.findById(bookId);
         if(findById.isPresent()){           
             Likes like = findById.get();
-            update(like.getBookId(),customerEmail);
+            update(like.getBook().getId(),customerEmail);
             respuesta.put("likes", like.getLikes());    
             String[] split = like.getCustomerEmail().split(";");
             lista = Arrays.asList(split);            
-        }else{   
-            Likes save = repository.save(new Likes(bookId,customerEmail,1));
-            respuesta.put("likes", save.getLikes());   
+        }else{
+            Likes newLike = new Likes();
+            newLike.setBook(book.get());
+            newLike.setCustomerEmail(customerEmail);
+            newLike.setLikes(1);
+            Likes save = repository.save(newLike);
+            respuesta.put("likes", save.getLikes());
              lista = new ArrayList<>();
-            lista.add(customerEmail);            
+            lista.add(customerEmail);
         }
         respuesta.put("customers",lista);
         

@@ -25,9 +25,9 @@ public class BookRepositoryInit {
     @PostConstruct
     private void postConstruct() {
         List<Book> l = new ArrayList<>();
-        l.add(new Book(1,"Orgullo y prejuicio","de Jane Austen",2,10.5,true));
-        l.add(new Book(2,"Un mundo feliz","de Aldous Huxley",10,13.5,true));    
-        l.add(new Book(3,"1984","de George Orwell",1,11.5,false));       
+        l.add(new Book(1,"Orgullo y prejuicio","de Jane Austen",2,10.5,true,null,null));
+        l.add(new Book(2,"Un mundo feliz","de Aldous Huxley",10,13.5,true,null,null));
+        l.add(new Book(3,"1984","de George Orwell",1,11.5,false,null,null));
         repository.saveAll(l);        
     }    
 }

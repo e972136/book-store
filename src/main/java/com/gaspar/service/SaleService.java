@@ -73,7 +73,7 @@ public class SaleService {
         resp.put("customerEmail", customerEmail);
         resp.put("price", book.getSalePrice());   
         Sale sale = new Sale();
-        sale.setBookId(book.getId());
+        sale.setBook(book);
         sale.setCustomerEmail(customerEmail);
         sale.setPrice(book.getSalePrice());
         LocalDate date = LocalDate.now(); 

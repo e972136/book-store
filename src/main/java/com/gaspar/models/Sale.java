@@ -7,10 +7,8 @@ package com.gaspar.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,8 +26,13 @@ public class Sale  implements Serializable{
    @Id
    @GeneratedValue
    Integer id;
-   Integer bookId;
+
+//   Integer bookId;
    String customerEmail;
    Double price;
    String dateOfSale;
+
+   @ManyToOne(optional = false)
+   @JoinColumn(name = "bookId",nullable = false)
+   private Book book;
 }
