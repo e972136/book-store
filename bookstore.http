@@ -51,7 +51,7 @@ Content-Type: application/json
 
 {
     "bookId": 1,
-    "customerEmail": "gashapar"
+    "customerEmail": "gadpar@has.com"
 }
 
 
@@ -63,3 +63,7 @@ Content-Type: application/json
     "bookId": 1,
     "customerEmail": "gaspari"
 }
+
+
+#### sales
+get http://localhost:8000/transactions/books/1

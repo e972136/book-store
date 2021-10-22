@@ -5,19 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd0bcaab-6a02-43ab-b550-eefad5a92929" name="Changes" comment="Inicio">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/TransactionsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/service/TransactionsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.http" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/BookController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/LikesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/LikesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/SaleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/controller/SaleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/repository/SaleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/repository/SaleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gaspar/service/SaleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gaspar/service/SaleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gaspar/controller/BookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gaspar/controller/BookController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/gaspar/service/BookService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/gaspar/service/BookService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
