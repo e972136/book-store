@@ -34,6 +34,7 @@ public class LikesController {
             Map<String,Object> save = service.post(fields);
         return new ResponseEntity<>(save,HttpStatus.CREATED);
         } catch (Exception e) {
+            log.info("Error", e);
              return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }        
     }    

@@ -1,11 +1,10 @@
-
 #### get all books
 get http://localhost:8000/books
 Content-Type: application/json
 
 {
-  "page":"1",
-  "size":"5"
+  "page":1,
+  "size":5
 }
 
 #### post book

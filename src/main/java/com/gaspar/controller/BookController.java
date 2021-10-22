@@ -38,6 +38,7 @@ public class BookController {
             Book save = bookService.save(book);
             return new ResponseEntity<>(save, HttpStatus.CREATED);
         } catch (Exception e) {
+            log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -49,6 +50,7 @@ public class BookController {
             Book update = bookService.update(id, book);
             return new ResponseEntity<>(update, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -60,6 +62,7 @@ public class BookController {
             Book book = bookService.patch(id, fields);
             return new ResponseEntity<>(book, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -71,6 +74,7 @@ public class BookController {
             bookService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

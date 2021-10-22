@@ -11,10 +11,8 @@ import com.gaspar.models.Sale;
 import com.gaspar.repository.BookRepository;
 import com.gaspar.repository.SaleRepository;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,9 +28,10 @@ public class SaleService {
     private final SaleRepository repository;
     private final BookService bookService;
 
-  
-    
-    
+    public List<Sale> getBooksInfo(Integer id){
+        return repository.findBybookId(id);
+    }
+
     public Map<String, Object> newSale(Map<String, Object> fields) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Map<String, Object> resp = new HashMap<>();
