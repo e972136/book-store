@@ -50,18 +50,44 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
+    /*
+    *   String title;
+    String description;
+    Integer stock;
+    Double salePrice;
+    Boolean available;
+    * */
     @Transactional
     public Book patch(Integer id, Map<Object, Object> fields) {        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
         //System.err.println(" encontrado: "+bookObtain);
         if (bookObtain != null) {
-            fields.forEach((key, value) -> {
-                if(key.equals("id")) return;
-                Field findField = ReflectionUtils.findField(Book.class, key.toString());
-                findField.setAccessible(true);
-                ReflectionUtils.setField(findField, bookObtain, value);
-            });
+            if(fields.containsKey("title")){
+                bookObtain.setTitle((String)fields.get("title"));
+            }
+            if(fields.containsKey("description")){
+                bookObtain.setDescription((String)fields.get("description"));
+            }
+            if(fields.containsKey("stock")){
+                try{
+                    bookObtain.setStock(Integer.valueOf(fields.get("stock")+""));
+                }catch (Exception e){
+                    log.error(e+"");
+                }
+            }
+            if(fields.containsKey("salePrice")){
+                bookObtain.setSalePrice(Double.valueOf(fields.get("salePrice")+""));
+            }
+            if(fields.containsKey("available")){
+                bookObtain.setAvailable(Boolean.valueOf(fields.get("available")+""));
+            }
+//            fields.forEach((key, value) -> {
+//                if(key.equals("id")) return;
+//                Field findField = ReflectionUtils.findField(Book.class, key.toString());
+//                findField.setAccessible(true);
+//                ReflectionUtils.setField(findField, bookObtain, value);
+//            });
             System.err.println(" actualizado: " + bookObtain);
 
         }
