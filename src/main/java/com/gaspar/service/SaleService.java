@@ -5,10 +5,9 @@
  */
 package com.gaspar.service;
 
-import com.gaspar.Utils;
+import com.gaspar.dto.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
-import com.gaspar.repository.BookRepository;
 import com.gaspar.repository.SaleRepository;
 import java.time.LocalDate;
 import java.util.*;

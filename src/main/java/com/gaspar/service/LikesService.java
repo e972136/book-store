@@ -5,10 +5,9 @@
  */
 package com.gaspar.service;
 
-import com.gaspar.Utils;
+import com.gaspar.dto.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Likes;
-import com.gaspar.models.Sale;
 import com.gaspar.repository.LikesRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

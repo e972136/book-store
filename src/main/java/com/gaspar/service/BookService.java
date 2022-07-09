@@ -1,5 +1,6 @@
 package com.gaspar.service;
 
+import com.gaspar.dto.BookDto;
 import com.gaspar.models.Book;
 import com.gaspar.repository.BookRepository;
 
@@ -27,11 +28,14 @@ import org.springframework.util.ReflectionUtils;
 public class BookService {
     private final BookRepository bookRepository;
 
-    public List<Book> todosLosLibros() {
-        return bookRepository.findAll();
-    }
-
-    public Book save(Book book) {
+    public Book save(BookDto bookDto) {
+        Book book = Book.builder()
+                .title(bookDto.getTitle())
+                .description(bookDto.getDescription())
+                .stock(bookDto.getStock())
+                .salePrice(bookDto.getSalePrice())
+                .available(true)
+                .build();
         return bookRepository.save(book);
     }
 
@@ -112,20 +116,17 @@ public class BookService {
             size = 12;
         }
 
-
-            Field findField = ReflectionUtils.findField(Book.class, sortStr);
-            if (findField != null) {
-                sortStr = "title";
-            } else {
-//                msgSorg = "Columna " + isSortBy + " no existe";
-//                retornar mensaje de error
-//
-            }
+        Field findField = ReflectionUtils.findField(Book.class, sortStr);
+        if (findField == null) {
+             sortStr = "title";
+        } else {
+            System.err.println("Columna " + sortStr + " no existe");
+        }
 
         Sort sortBy = Sort.by(sortStr);
-
         PageRequest pageRequest = PageRequest.of(page, size, sortBy);
         Page<Book> findAll = bookRepository.findAll(pageRequest);
+
 
         Map<Object, Object> respuesta = new LinkedHashMap<>();
 

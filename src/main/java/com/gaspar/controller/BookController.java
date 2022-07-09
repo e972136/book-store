@@ -1,5 +1,6 @@
 package com.gaspar.controller;
 
+import com.gaspar.dto.BookDto;
 import com.gaspar.models.Book;
 import com.gaspar.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,9 @@ public class BookController {
     }
 
     @PostMapping
-    ResponseEntity<Book> newBook(@RequestBody Book book) {
+    ResponseEntity<Book> newBook(@RequestBody BookDto bookDto) {
         try {
-            Book save = bookService.save(book);
+            Book save = bookService.save(bookDto);
             return new ResponseEntity<>(save, HttpStatus.CREATED);
         } catch (Exception e) {
             log.info("Error", e);
