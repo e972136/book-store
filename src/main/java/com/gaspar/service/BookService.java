@@ -94,51 +94,43 @@ public class BookService {
         return bookObtain;
     }
 
-    public Map<Object, Object> allBooksPage(Map<String, Object> fields) {
+    public Map<Object, Object> allBooksPage(boolean unavailable,
+                                            Integer page,
+                                            Integer size,
+                                            String sortStr
+    ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Integer page = 0;
-        Integer size = 2;
-        page = (Integer) fields.getOrDefault("page", null);
+
         if (page != null) {
             page = page - 1;
         }
         if (page < 0) {
             page = 0;
         }
-        size = (Integer) fields.getOrDefault("size", null);        
 
         if (size <= 0) {
             size = 12;
         }
 
-        String msgSorg = null;
-        String isSortBy = (String) fields.getOrDefault("sort", null);
-        Sort sortBy = Sort.by("title");
-        
-        if (isSortBy != null) {
-            Field findField = ReflectionUtils.findField(Book.class, isSortBy);
+
+            Field findField = ReflectionUtils.findField(Book.class, sortStr);
             if (findField != null) {
-                sortBy = Sort.by(isSortBy);
+                sortStr = "title";
             } else {
-                msgSorg = "Columna " + isSortBy + " no existe";
+//                msgSorg = "Columna " + isSortBy + " no existe";
+//                retornar mensaje de error
+//
             }
-        }
+
+        Sort sortBy = Sort.by(sortStr);
 
         PageRequest pageRequest = PageRequest.of(page, size, sortBy);
         Page<Book> findAll = bookRepository.findAll(pageRequest);
 
         Map<Object, Object> respuesta = new LinkedHashMap<>();
 
-        Boolean showUnavaible = false;
-        Object showUnavaibleGet =  fields.getOrDefault("unavailable", null);
-        if(showUnavaibleGet!=null)
-        {
-            try{
-                showUnavaible = (Boolean)showUnavaibleGet;
-            }catch(Exception e){
+        Boolean showUnavaible = unavailable;
 
-            }
-        }
         if (showUnavaible) {
             System.err.println("muestra todo");
             respuesta.put("content", findAll.getContent());
@@ -153,9 +145,7 @@ public class BookService {
         respuesta.put("totalElements", findAll.getTotalElements());
         respuesta.put("totalPages", findAll.getTotalPages());
         respuesta.put("number", findAll.getNumber()+1);
-        if (msgSorg != null) {
-            respuesta.put("Error", msgSorg);
-        }
+
         return respuesta;
     }
 

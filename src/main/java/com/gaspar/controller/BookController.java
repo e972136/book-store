@@ -22,9 +22,14 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    ResponseEntity<Map<Object, Object>> allBooksPage(@RequestBody Map<String, Object> fields) {
+    ResponseEntity<Map<Object, Object>> allBooksPage(
+            @RequestParam(required = false,defaultValue = "false") boolean unavailable,
+            @RequestParam(required = false,defaultValue = "1") Integer page,
+            @RequestParam(required = false,defaultValue = "12") Integer size,
+            @RequestParam(required = false,defaultValue = "title") String sort
+    ) {
         try {
-            Map<Object, Object> allBooksPage = bookService.allBooksPage(fields);
+            Map<Object, Object> allBooksPage = bookService.allBooksPage(unavailable,page,size,sort);
             return new ResponseEntity<>(allBooksPage, HttpStatus.OK);
         } catch (Exception e) {
             log.info("Error", e);
