@@ -6,7 +6,7 @@
 package com.gaspar.service;
 
 import com.gaspar.exception.GeneralExeption;
-import com.gaspar.dto.SaleDto;
+import com.gaspar.dto.TransactionDto;
 import com.gaspar.dto.SaleResponse;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
@@ -37,9 +37,9 @@ public class SaleService {
     }
 
     @Transactional
-    public SaleResponse newSale(SaleDto saleDto) {
+    public SaleResponse newSale(TransactionDto transactionDto) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Book book = bookService.getBook(saleDto.getBookId()).orElse(null);
+        Book book = bookService.getBook(transactionDto.getBookId()).orElse(null);
         if(book == null){
             System.err.println("Libro no existe");
             throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
@@ -58,7 +58,7 @@ public class SaleService {
         book.setStock(book.getStock()-1);
 
         Sale sale = Sale.builder()
-                .customerEmail(saleDto.getCustomerEmail())
+                .customerEmail(transactionDto.getCustomerEmail())
                 .price(book.getSalePrice())
                 .dateOfSale(LocalDateTime.now())
                 .bookId(book.getId())

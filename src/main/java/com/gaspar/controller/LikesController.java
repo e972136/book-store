@@ -5,6 +5,8 @@
  */
 package com.gaspar.controller;
 
+import com.gaspar.dto.LikeResponse;
+import com.gaspar.dto.TransactionDto;
 import com.gaspar.models.Likes;
 import com.gaspar.service.LikesService;
 
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  *
  * @author ds010102
@@ -31,11 +35,15 @@ public class LikesController implements Serializable {
     private final LikesService service;
  
     @PostMapping
-    ResponseEntity<Map<String,Object>> post(@RequestBody Map<String,Object> fields){
+    ResponseEntity<LikeResponse> post(@Valid @RequestBody TransactionDto transactionDto){
         try {
-            Map<String,Object> save = service.post(fields);
-        return new ResponseEntity<>(save,HttpStatus.CREATED);
-        } catch (Exception e) {
+            LikeResponse save = service.post(transactionDto);
+            return new ResponseEntity<>(save,HttpStatus.CREATED);
+        }
+        catch (RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             log.info("Error", e);
              return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }        

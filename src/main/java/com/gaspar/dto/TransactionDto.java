@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleDto {
+public class TransactionDto {
     @NotNull
     Integer bookId;
 //    @Email
