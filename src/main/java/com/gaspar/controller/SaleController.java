@@ -5,6 +5,9 @@
  */
 package com.gaspar.controller;
 
+import com.gaspar.dto.GeneralExeption;
+import com.gaspar.dto.SaleDto;
+import com.gaspar.dto.SaleResponse;
 import com.gaspar.service.SaleService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  *
@@ -28,14 +33,8 @@ public class SaleController {
     private final SaleService service;
     
     @PostMapping
-    ResponseEntity<Map<String,Object>> newSale(@RequestBody Map<String,Object> fields){
-        try {
-            Map<String, Object> newSale = service.newSale(fields);
+    ResponseEntity<SaleResponse> newSale(@Valid @RequestBody SaleDto saleDto){
+        SaleResponse newSale = service.newSale(saleDto);
         return new ResponseEntity<>(newSale,HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.info("Error", e);
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        
     }
 }

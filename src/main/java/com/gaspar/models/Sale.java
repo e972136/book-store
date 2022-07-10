@@ -6,10 +6,13 @@
 package com.gaspar.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,18 +24,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name="sale")
 public class Sale  implements Serializable{
    @Id
    @GeneratedValue
    Integer id;
 
-//   Integer bookId;
+   Integer bookId;
    String customerEmail;
    Double price;
-   String dateOfSale;
+   LocalDateTime dateOfSale;
 
-   @ManyToOne(optional = false)
-   @JoinColumn(name = "bookId",nullable = false)
-   private Book book;
+//   @ManyToOne(optional = false)
+//   @JoinColumn(name = "bookId",nullable = false)
+//   private Book book;
 }

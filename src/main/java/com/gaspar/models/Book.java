@@ -28,13 +28,13 @@ public class Book implements Serializable {
     private Double salePrice;
     private Boolean available;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<Sale> sales;
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+//    private List<Sale> sales;
 
 
-    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Likes like;
+//    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    private Likes like;
 
     @Override
     public String toString(){

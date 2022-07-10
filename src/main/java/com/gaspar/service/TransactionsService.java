@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,7 @@ public class TransactionsService {
         Book book = oBook.get();
         List<Sale> booksInfo = saleService.getBooksInfo(id);
         Double totalRevenue = booksInfo.stream().map(b -> b.getPrice()).reduce(0.0, (sub, ele) -> sub + ele);
-        Set<String> saleDates = booksInfo.stream().map(b->b.getDateOfSale()).collect(Collectors.toSet());
+        Set<LocalDateTime> saleDates = booksInfo.stream().map(b->b.getDateOfSale()).collect(Collectors.toSet());
         Set<String> customers = booksInfo.stream().map(b->b.getCustomerEmail()).collect(Collectors.toSet());
 
         respuesta.put("bookId",id);

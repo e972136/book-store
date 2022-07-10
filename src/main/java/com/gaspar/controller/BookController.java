@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequestMapping(path = "/books")
@@ -39,7 +41,7 @@ public class BookController {
     }
 
     @PostMapping
-    ResponseEntity<Book> newBook(@RequestBody BookDto bookDto) {
+    ResponseEntity<Book> newBook(@Valid @RequestBody BookDto bookDto) {
         try {
             Book save = bookService.save(bookDto);
             return new ResponseEntity<>(save, HttpStatus.CREATED);

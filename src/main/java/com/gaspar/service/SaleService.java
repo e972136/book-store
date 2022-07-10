@@ -5,16 +5,22 @@
  */
 package com.gaspar.service;
 
+import com.gaspar.dto.GeneralExeption;
+import com.gaspar.dto.SaleDto;
+import com.gaspar.dto.SaleResponse;
 import com.gaspar.dto.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
 import com.gaspar.repository.SaleRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -31,55 +37,35 @@ public class SaleService {
         return repository.findBybookId(id);
     }
 
-    public Map<String, Object> newSale(Map<String, Object> fields) {
+    @Transactional
+    public SaleResponse newSale(SaleDto saleDto) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Map<String, Object> resp = new HashMap<>();
-        Integer bookId = (Integer)fields.getOrDefault("bookId",null);
-        if(bookId == null){                    
-            resp.put("Error", "No esta el campo bookId");
-            return resp;
+        Book book = bookService.getBook(saleDto.getBookId()).orElse(null);
+        if(book == null){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
         }
-        
-        String customerEmail = (String)fields.getOrDefault("customerEmail",null);
-        if(customerEmail==null){
-             resp.put("Error", "No esta el campo customerEmail");
-            return resp;           
-        }
-        
-        if(!Utils.correoValido(customerEmail)){
-            resp.put("Error", "Correo invalido "+customerEmail);
-            return resp;
-        }
-        
-        Optional<Book> findById = bookService.getBook(bookId);
-        if(!findById.isPresent()){            
-            resp.put("Error", "Id No Existe");
-            return resp;
-        }
-        Book book = findById.get();
-        
-        if(!book.getAvailable()){
-            resp.put("Error", "Libro no disponible");
-            return resp;           
-        }
-        if(book.getStock()<=0){
-            resp.put("Error", "No hay Existencia");
-            return resp;           
-        }
-        book.setStock(book.getStock()-1);
-        bookService.update(book.getId(), book);
-        resp.put("bookId", book.getId());
-        resp.put("customerEmail", customerEmail);
-        resp.put("price", book.getSalePrice());   
-        Sale sale = new Sale();
-        sale.setBook(book);
-        sale.setCustomerEmail(customerEmail);
-        sale.setPrice(book.getSalePrice());
-        LocalDate date = LocalDate.now(); 
-        sale.setDateOfSale(date.toString());
-        repository.save(sale);  
 
-        return resp;
+        if(book.getAvailable()==false){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
+        }
+
+        if(book.getStock()<1){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro sin existencia", HttpStatus.BAD_REQUEST);
+        }
+
+        book.setStock(book.getStock()-1);
+
+        Sale sale = Sale.builder()
+                .customerEmail(saleDto.getCustomerEmail())
+                .price(book.getSalePrice())
+                .dateOfSale(LocalDateTime.now())
+                .bookId(book.getId())
+                .build();
+        Sale save = repository.save(sale);
+        return SaleResponse.of(book.getId(),save.getCustomerEmail(),save.getPrice());
     }
-    
+
 }
