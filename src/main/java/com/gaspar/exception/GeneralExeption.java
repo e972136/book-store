@@ -1,4 +1,4 @@
-package com.gaspar.dto;
+package com.gaspar.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
