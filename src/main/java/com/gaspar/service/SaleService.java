@@ -5,14 +5,13 @@
  */
 package com.gaspar.service;
 
-import com.gaspar.dto.GeneralExeption;
+import com.gaspar.exception.GeneralExeption;
 import com.gaspar.dto.SaleDto;
 import com.gaspar.dto.SaleResponse;
-import com.gaspar.dto.Utils;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
 import com.gaspar.repository.SaleRepository;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.*;
 

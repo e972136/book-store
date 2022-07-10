@@ -5,11 +5,9 @@
  */
 package com.gaspar.controller;
 
-import com.gaspar.dto.GeneralExeption;
 import com.gaspar.dto.SaleDto;
 import com.gaspar.dto.SaleResponse;
 import com.gaspar.service.SaleService;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

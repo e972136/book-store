@@ -1,4 +1,4 @@
-package com.gaspar.dto;
+package com.gaspar.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
