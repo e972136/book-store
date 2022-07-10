@@ -5,7 +5,10 @@
  */
 package com.gaspar.service;
 
+import com.gaspar.dto.LikeResponse;
+import com.gaspar.dto.TransactionDto;
 import com.gaspar.dto.Utils;
+import com.gaspar.exception.GeneralExeption;
 import com.gaspar.models.Book;
 import com.gaspar.models.Likes;
 import com.gaspar.repository.LikesRepository;
@@ -15,9 +18,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,65 +39,32 @@ public class LikesService {
     private final BookService bookService;
     
     @Transactional
-    public void update(Integer id, String customerEmail) {       
-        Likes obtein = repository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
-        if(!obtein.getCustomerEmail().toLowerCase().contains(customerEmail.toLowerCase())){
-            obtein.setCustomerEmail(obtein.getCustomerEmail()+";"+customerEmail);  
-            obtein.setLikes(obtein.getLikes()+1);
-        }        
+    public LikeResponse post(TransactionDto transactionDto) {
+        Book book = bookService.getBook(transactionDto.getBookId()).orElse(null);
+        if(book == null){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
+        }
+
+        if(book.getAvailable()==false){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
+        }
+
+        if(book.getStock()<1){
+            System.err.println("Libro no existe");
+            throw new GeneralExeption("Libro sin existencia", HttpStatus.BAD_REQUEST);
+        }
+        Likes likes = Likes.builder()
+                .bookId(transactionDto.getBookId())
+                .customerEmail(transactionDto.getCustomerEmail()).build();
+        repository.save(likes);
+
+        List<Likes> bybookId = repository.findBybookId(transactionDto.getBookId());
+        List<String> collect = bybookId.stream().map(r -> r.getCustomerEmail()).collect(Collectors.toList());
+
+        return LikeResponse.of(book.getId(),collect,bybookId.size());
     }
-    
-    @Transactional
-    public Map<String, Object> post(Map<String, Object> fields) {
-        Map<String, Object> respuesta = new LinkedHashMap<>();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Integer bookId =  (Integer)fields.getOrDefault("bookId", null);
-        if(bookId==null){
-            respuesta.put("Error", "No esta el campo bookId");
-            return respuesta;
-        }
-      
-        Optional<Book> book = bookService.getBook(bookId);
-        if(!book.isPresent()){
-            respuesta.put("Error", "No esta el libro "+bookId);
-            return respuesta;
-        }
-        
-        String customerEmail =  (String)fields.getOrDefault("customerEmail", null);
-        if(customerEmail==null){
-            respuesta.put("Error", "No esta el campo customerEmail");
-            return respuesta;
-        }       
-        
-        if(!Utils.correoValido(customerEmail)){
-            respuesta.put("Error", "Correo invalido "+customerEmail);
-            return respuesta;
-        }
-        
-        
-        respuesta.put("bookId", bookId);        
-        
-        List<String> lista;
-        Optional<Likes> findById = repository.findById(bookId);
-        if(findById.isPresent()){           
-            Likes like = findById.get();
-            update(like.getBook().getId(),customerEmail);
-            respuesta.put("likes", like.getLikes());    
-            String[] split = like.getCustomerEmail().split(";");
-            lista = Arrays.asList(split);            
-        }else{
-            Likes newLike = new Likes();
-            newLike.setBook(book.get());
-            newLike.setCustomerEmail(customerEmail);
-            newLike.setLikes(1);
-            Likes save = repository.save(newLike);
-            respuesta.put("likes", save.getLikes());
-             lista = new ArrayList<>();
-            lista.add(customerEmail);
-        }
-        respuesta.put("customers",lista);
-        
-        return respuesta;        
-    }
-    
+
+
 }

@@ -8,6 +8,7 @@ package com.gaspar.models;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name="likes")
 public class Likes implements Serializable {
 
@@ -28,11 +30,12 @@ public class Likes implements Serializable {
     @GeneratedValue
     Integer id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "book_id")
-    Book book;
-//    Integer bookId;
+//    @OneToOne
+//    @MapsId
+//    @JoinColumn(name = "book_id")
+//    Book book;
+
+    Integer bookId;
     String customerEmail;
-    Integer likes;
+
 }

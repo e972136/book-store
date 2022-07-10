@@ -9,10 +9,12 @@ import com.gaspar.models.Likes;
 import com.gaspar.models.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  *
  * @author ds010102
  */
 public interface LikesRepository extends JpaRepository<Likes,Integer>{
-    
+    List<Likes> findBybookId(Integer bookId);
 }
