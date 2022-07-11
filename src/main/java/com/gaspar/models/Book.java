@@ -41,23 +41,4 @@ public class Book implements Serializable {
         return title+","+description+","+stock+","+salePrice+","+available;
     }
 
-    public void set(Book book) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-       
-       if(book.title!=null)
-        this.title = book.title;
-       
-       if(book.description!=null)
-        this.description = book.description;
-       
-       if(book.stock!=null)
-        this.stock = book.stock;
-       
-       if(book.salePrice!=null)
-        this.salePrice = book.salePrice;
-       
-       if(book.available!=null)
-        this.available = book.available;
-    }
-    
 }

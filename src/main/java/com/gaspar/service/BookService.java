@@ -1,6 +1,7 @@
 package com.gaspar.service;
 
 import com.gaspar.dto.BookDto;
+import com.gaspar.dto.BookPageResponse;
 import com.gaspar.models.Book;
 import com.gaspar.repository.BookRepository;
 
@@ -40,9 +41,16 @@ public class BookService {
     }
 
     @Transactional
-    public Book update(Integer id, Book book) {
+    public Book update(Integer id, BookDto book) {
+
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
-        bookObtain.set(book);
+        bookObtain.setTitle(book.getTitle());
+        String description =(book.getDescription()==null)?bookObtain.getDescription():book.getDescription();
+        bookObtain.setDescription(description);
+        bookObtain.setStock(book.getStock());
+        bookObtain.setSalePrice(book.getSalePrice());
+        Boolean available = (book.getAvailable()==null) ||book.getAvailable();
+        bookObtain.setAvailable(available);
         return bookObtain;
     }
 
@@ -98,10 +106,10 @@ public class BookService {
         return bookObtain;
     }
 
-    public Map<Object, Object> allBooksPage(boolean unavailable,
-                                            Integer page,
-                                            Integer size,
-                                            String sortStr
+    public BookPageResponse allBooksPage(boolean unavailable,
+                                         Integer page,
+                                         Integer size,
+                                         String sortStr
     ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
@@ -118,9 +126,8 @@ public class BookService {
 
         Field findField = ReflectionUtils.findField(Book.class, sortStr);
         if (findField == null) {
-             sortStr = "title";
-        } else {
             System.err.println("Columna " + sortStr + " no existe");
+             sortStr = "title";
         }
 
         Sort sortBy = Sort.by(sortStr);
@@ -128,24 +135,24 @@ public class BookService {
         Page<Book> findAll = bookRepository.findAll(pageRequest);
 
 
-        Map<Object, Object> respuesta = new LinkedHashMap<>();
+        BookPageResponse respuesta = new BookPageResponse();
 
         Boolean showUnavaible = unavailable;
 
         if (showUnavaible) {
             System.err.println("muestra todo");
-            respuesta.put("content", findAll.getContent());
+            respuesta.setContent(findAll.getContent());
         } else {
             System.err.println("muestra restringido");
-            respuesta.put("content", findAll.getContent().stream().filter(f -> f.getAvailable()).collect(Collectors.toList()));
+            respuesta.setContent(findAll.getContent().stream().filter(f -> f.getAvailable()).collect(Collectors.toList()));
         }
 
 
-        respuesta.put("size", size);
-        respuesta.put("numberOfElements", findAll.getNumberOfElements());
-        respuesta.put("totalElements", findAll.getTotalElements());
-        respuesta.put("totalPages", findAll.getTotalPages());
-        respuesta.put("number", findAll.getNumber()+1);
+        respuesta.setSize(size);
+        respuesta.setNumberOfElements(findAll.getNumberOfElements());
+        respuesta.setTotalElements(findAll.getTotalElements());
+        respuesta.setTotalPages(findAll.getTotalPages());
+        respuesta.setNumber(findAll.getNumber()+1);
 
         return respuesta;
     }

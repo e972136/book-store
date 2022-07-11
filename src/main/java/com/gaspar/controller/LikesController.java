@@ -41,7 +41,8 @@ public class LikesController implements Serializable {
             return new ResponseEntity<>(save,HttpStatus.CREATED);
         }
         catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.info(""+e);
+            throw e;
         }
         catch (Exception e) {
             log.info("Error", e);

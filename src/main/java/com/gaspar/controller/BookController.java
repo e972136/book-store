@@ -1,6 +1,7 @@
 package com.gaspar.controller;
 
 import com.gaspar.dto.BookDto;
+import com.gaspar.dto.BookPageResponse;
 import com.gaspar.models.Book;
 import com.gaspar.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +26,21 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    ResponseEntity<Map<Object, Object>> allBooksPage(
+    ResponseEntity<BookPageResponse> allBooksPage(
             @RequestParam(required = false,defaultValue = "false") boolean unavailable,
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "12") Integer size,
             @RequestParam(required = false,defaultValue = "title") String sort
     ) {
         try {
-            Map<Object, Object> allBooksPage = bookService.allBooksPage(unavailable,page,size,sort);
+            BookPageResponse allBooksPage = bookService.allBooksPage(unavailable,page,size,sort);
             return new ResponseEntity<>(allBooksPage, HttpStatus.OK);
-        } catch (Exception e) {
+        }
+        catch (RuntimeException e){
+            log.info(""+e);
+            throw e;
+        }
+        catch (Exception e) {
             log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -52,7 +58,7 @@ public class BookController {
     }
 
     @PutMapping(path = "{id}")
-    ResponseEntity<Book> updateBook(@PathVariable("id") Integer id, @RequestBody Book book) {
+    ResponseEntity<Book> updateBook(@PathVariable("id") Integer id, @RequestBody BookDto book) {
         log.info("Request to update Book: {}", book);
         try {
             Book update = bookService.update(id, book);

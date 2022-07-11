@@ -1,5 +1,6 @@
 package com.gaspar.controller;
 
+import com.gaspar.dto.TransactionsResponse;
 import com.gaspar.service.TransactionsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,14 @@ public class TransactionsController {
 
 
     @GetMapping(path = "/books/{id}")
-    ResponseEntity<Map<Object, Object>> getTransactions(@PathVariable("id") Integer id){
-        Map<Object, Object> trasactionsByBook= new HashMap<>();
+    ResponseEntity<TransactionsResponse> getTransactions(@PathVariable("id") Integer id){
+        TransactionsResponse trasactionsByBook=null;
         try {
             trasactionsByBook = service.getTrasactionsByBook(id);
+        }
+        catch (RuntimeException e){
+            log.info(""+e);
+            throw e;
         }catch (Exception e){
             log.info(""+e);
         }
