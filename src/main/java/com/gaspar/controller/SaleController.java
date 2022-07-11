@@ -32,7 +32,18 @@ public class SaleController {
     
     @PostMapping
     ResponseEntity<SaleResponse> newSale(@Valid @RequestBody TransactionDto transactionDto){
-        SaleResponse newSale = service.newSale(transactionDto);
-        return new ResponseEntity<>(newSale,HttpStatus.CREATED);
+        SaleResponse newSale=null;
+        try {
+            newSale = service.newSale(transactionDto);
+        }
+        catch (RuntimeException e){
+            log.info(""+e);
+            throw e;
+        }
+        catch (Exception e){
+            log.info(""+e);
+            throw e;
+        }
+        return new ResponseEntity<>(newSale, HttpStatus.CREATED);
     }
 }
