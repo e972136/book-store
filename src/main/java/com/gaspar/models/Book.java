@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Book implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -28,9 +28,18 @@ public class Book implements Serializable {
     private Double salePrice;
     private Boolean available;
 
-//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-//    private List<Sale> sales;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Sale> sales;
+
+    public Book(Integer id, String title, String description, Integer stock, Double salePrice, Boolean available) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.stock = stock;
+        this.salePrice = salePrice;
+        this.available = available;
+    }
 
 //    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
 //    @PrimaryKeyJoinColumn

@@ -12,12 +12,11 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+public class BookRequest {
     @NotNull
     @NotBlank
     private String title;
 
-    @NotBlank
     private String description;
 
     @NotNull

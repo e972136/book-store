@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,15 +29,16 @@ import lombok.NoArgsConstructor;
 @Table(name="sale")
 public class Sale  implements Serializable{
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    Integer id;
-
-   Integer bookId;
    String customerEmail;
    Double price;
    LocalDateTime dateOfSale;
 
-//   @ManyToOne(optional = false)
-//   @JoinColumn(name = "bookId",nullable = false)
-//   private Book book;
+   @ManyToOne(optional = false)
+   @JoinColumn(name = "bookId",nullable = false)
+   @JsonBackReference
+   private Book book;
+
+
 }

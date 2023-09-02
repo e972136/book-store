@@ -45,8 +45,8 @@ public class SaleService {
             throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
         }
 
-        if(book.getAvailable()==false){
-            System.err.println("Libro no existe");
+        if(!book.getAvailable()){
+            System.err.println("Libro no disponible");
             throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
         }
 
@@ -61,7 +61,7 @@ public class SaleService {
                 .customerEmail(transactionDto.getCustomerEmail())
                 .price(book.getSalePrice())
                 .dateOfSale(LocalDateTime.now())
-                .bookId(book.getId())
+                .book(book)
                 .build();
         Sale save = repository.save(sale);
         return SaleResponse.of(book.getId(),save.getCustomerEmail(),save.getPrice());

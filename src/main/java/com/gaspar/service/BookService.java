@@ -1,21 +1,24 @@
 package com.gaspar.service;
 
-import com.gaspar.dto.BookDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.gaspar.dto.BookRequest;
+import com.gaspar.dto.BookRequestPatch;
 import com.gaspar.dto.BookPageResponse;
+import com.gaspar.dto.BookResponse;
 import com.gaspar.models.Book;
 import com.gaspar.repository.BookRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Field;
-import java.util.LinkedHashMap;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,13 +26,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.util.ReflectionUtils;
 
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BookService {
     private final BookRepository bookRepository;
+    private final ObjectMapper objectMapper;
 
-    public Book save(BookDto bookDto) {
+    public ResponseEntity<BookResponse> save(BookRequest bookDto) {
         Book book = Book.builder()
                 .title(bookDto.getTitle())
                 .description(bookDto.getDescription())
@@ -37,21 +43,37 @@ public class BookService {
                 .salePrice(bookDto.getSalePrice())
                 .available(true)
                 .build();
-        return bookRepository.save(book);
+        Book save = bookRepository.save(book);
+        BookResponse bookResponse = null;
+        try {
+            bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(save), BookResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
     }
 
     @Transactional
-    public Book update(Integer id, BookDto book) {
-
+    public ResponseEntity<BookResponse> update(Integer id, BookRequest book) {
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
+        if(nonNull(book.getDescription())){
+            bookObtain.setDescription(book.getDescription());
+        }
+        if(nonNull(book.getAvailable())){
+            bookObtain.setAvailable(book.getAvailable());
+        }
         bookObtain.setTitle(book.getTitle());
-        String description =(book.getDescription()==null)?bookObtain.getDescription():book.getDescription();
-        bookObtain.setDescription(description);
         bookObtain.setStock(book.getStock());
         bookObtain.setSalePrice(book.getSalePrice());
-        Boolean available = (book.getAvailable()==null) ||book.getAvailable();
-        bookObtain.setAvailable(available);
-        return bookObtain;
+
+        BookResponse bookResponse = null;
+        try {
+            bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(bookObtain), BookResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ResponseEntity<>(bookResponse, HttpStatus.OK);
     }
 
     public void delete(Integer id) {
@@ -62,38 +84,31 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    /*
-    *   String title;
-    String description;
-    Integer stock;
-    Double salePrice;
-    Boolean available;
-    * */
+    /**
+     *
+     * @param id
+     * @param fields
+     * @return
+     */
     @Transactional
-    public Book patch(Integer id, Map<Object, Object> fields) {        
+    public ResponseEntity<BookResponse> patch(Integer id, BookRequestPatch fields) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Book bookObtain = bookRepository.findById(id).orElseThrow(() -> new IllegalStateException("Id no existe"));
-        //System.err.println(" encontrado: "+bookObtain);
-        if (bookObtain != null) {
-            if(fields.containsKey("title")){
-                bookObtain.setTitle((String)fields.get("title"));
-            }
-            if(fields.containsKey("description")){
-                bookObtain.setDescription((String)fields.get("description"));
-            }
-            if(fields.containsKey("stock")){
-                try{
-                    bookObtain.setStock(Integer.valueOf(fields.get("stock")+""));
-                }catch (Exception e){
-                    log.error(e+"");
-                }
-            }
-            if(fields.containsKey("salePrice")){
-                bookObtain.setSalePrice(Double.valueOf(fields.get("salePrice")+""));
-            }
-            if(fields.containsKey("available")){
-                bookObtain.setAvailable(Boolean.valueOf(fields.get("available")+""));
-            }
+        if(nonNull(fields.getTitle())){
+            bookObtain.setTitle(fields.getTitle());
+        }
+        if(nonNull(fields.getDescription())){
+            bookObtain.setDescription(fields.getDescription());
+        }
+        if(nonNull(fields.getStock())){
+            bookObtain.setStock(fields.getStock());
+        }
+        if(nonNull(fields.getSalePrice())){
+            bookObtain.setSalePrice(fields.getSalePrice());
+        }
+        if(nonNull(fields.getAvailable())){
+            bookObtain.setAvailable(fields.getAvailable());
+        }
 //            fields.forEach((key, value) -> {
 //                if(key.equals("id")) return;
 //                Field findField = ReflectionUtils.findField(Book.class, key.toString());
@@ -102,8 +117,14 @@ public class BookService {
 //            });
             System.err.println(" actualizado: " + bookObtain);
 
+        BookResponse bookResponse = null;
+        try {
+            bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(bookObtain), BookResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return bookObtain;
+
+        return  new ResponseEntity<>(bookResponse, HttpStatus.OK);
     }
 
     public BookPageResponse allBooksPage(boolean unavailable,

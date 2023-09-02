@@ -1,19 +1,22 @@
 package com.gaspar.controller;
 
-import com.gaspar.dto.BookDto;
+import com.gaspar.dto.BookRequest;
+import com.gaspar.dto.BookRequestPatch;
 import com.gaspar.dto.BookPageResponse;
+import com.gaspar.dto.BookResponse;
 import com.gaspar.models.Book;
 import com.gaspar.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -47,22 +50,31 @@ public class BookController {
     }
 
     @PostMapping
-    ResponseEntity<Book> newBook(@Valid @RequestBody BookDto bookDto) {
+    ResponseEntity<BookResponse> newBook(
+            @Valid @RequestBody BookRequest bookDto,
+            BindingResult result) {
+        if(result.hasErrors()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,this.formatMessage(result));
+        }
         try {
-            Book save = bookService.save(bookDto);
-            return new ResponseEntity<>(save, HttpStatus.CREATED);
+            return bookService.save(bookDto);
         } catch (Exception e) {
             log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    @PutMapping(path = "{id}")
-    ResponseEntity<Book> updateBook(@PathVariable("id") Integer id, @RequestBody BookDto book) {
+    @PutMapping(path = "/{id}")
+    ResponseEntity<BookResponse> updateBook(@PathVariable("id") Integer id,
+                                    @RequestBody BookRequest book,
+                                    BindingResult result
+    ) {
+        if(result.hasErrors()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,this.formatMessage(result));
+        }
         log.info("Request to update Book: {}", book);
         try {
-            Book update = bookService.update(id, book);
-            return new ResponseEntity<>(update, HttpStatus.OK);
+            return bookService.update(id, book);
         } catch (Exception e) {
             log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -70,18 +82,17 @@ public class BookController {
     }
 
     @PatchMapping(path = "{id}")
-    ResponseEntity<Book> patch(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
+    ResponseEntity<BookResponse> patch(@PathVariable Integer id, @RequestBody BookRequestPatch fields) {
         log.info("Request to patch Book: {}", fields);
         try {
-            Book book = bookService.patch(id, fields);
-            return new ResponseEntity<>(book, HttpStatus.OK);
+            return bookService.patch(id, fields);
         } catch (Exception e) {
             log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
         log.info("Request to delete Book: {}", id);
         try {
@@ -91,5 +102,12 @@ public class BookController {
             log.info("Error", e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    String formatMessage(BindingResult result){
+        String collect = result.getFieldErrors().stream().map(err -> {
+            return err.getField() + "->" + err.getDefaultMessage();
+        }).collect(Collectors.joining(","));
+        return collect;
     }
 }
