@@ -5,11 +5,8 @@
  */
 package com.gaspar.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gaspar.dto.LikeRequest;
 import com.gaspar.dto.LikeResponse;
-import com.gaspar.dto.SalesRequest;
 import com.gaspar.exception.GeneralExeption;
 import com.gaspar.models.Book;
 import com.gaspar.models.Likes;
@@ -41,8 +38,8 @@ public class LikesService {
     @Transactional
     public ResponseEntity<LikeResponse> post(LikeRequest likeRequest) {
         Book book = bookService.getBook(likeRequest.getBookId()).orElseThrow(() -> new IllegalStateException("Id no existe"));
-        if(book.getAvailable()==false){
-            System.err.println("Libro no existe");
+        if(!Boolean.TRUE.equals(book.getAvailable())){
+            log.info("Libro no existe");
             throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
         }
         Likes likes = Likes.builder()
@@ -55,7 +52,7 @@ public class LikesService {
 
         Set<String> collect = todosLikes
                 .stream()
-                .map(l -> l.getCustomerEmail())
+                .map(Likes::getCustomerEmail)
                 .collect(Collectors.toSet());
 
         LikeResponse likeResponse = LikeResponse.of(book.getId(),collect,todosLikes.size());

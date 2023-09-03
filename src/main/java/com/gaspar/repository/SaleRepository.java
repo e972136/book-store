@@ -5,7 +5,6 @@
  */
 package com.gaspar.repository;
 
-import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
 

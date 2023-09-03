@@ -27,6 +27,7 @@ import javax.validation.Valid;
 public class BookController {
 
     private final BookService bookService;
+    private static final String ERROR = "Error ";
 
     @GetMapping
     ResponseEntity<BookPageResponse> allBooksPage(
@@ -44,7 +45,7 @@ public class BookController {
             throw e;
         }
         catch (Exception e) {
-            log.info("Error", e);
+            log.info(ERROR, e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -59,7 +60,7 @@ public class BookController {
         try {
             return bookService.save(bookDto);
         } catch (Exception e) {
-            log.info("Error", e);
+            log.info(ERROR, e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -76,7 +77,7 @@ public class BookController {
         try {
             return bookService.update(id, book);
         } catch (Exception e) {
-            log.info("Error", e);
+            log.info(ERROR, e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -87,7 +88,7 @@ public class BookController {
         try {
             return bookService.patch(id, fields);
         } catch (Exception e) {
-            log.info("Error", e);
+            log.info(ERROR, e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -99,7 +100,7 @@ public class BookController {
             bookService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.info("Error", e);
+            log.info(ERROR, e);
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

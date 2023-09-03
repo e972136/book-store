@@ -5,10 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,10 +17,6 @@ public class BookResponse {
     private Integer stock;
     private Double salePrice;
     private Boolean available;
-
-//    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
-//    @PrimaryKeyJoinColumn
-//    private Likes like;
 
     @Override
     public String toString(){

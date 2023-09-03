@@ -5,6 +5,7 @@ import com.gaspar.dto.BookRequest;
 import com.gaspar.dto.BookRequestPatch;
 import com.gaspar.dto.BookPageResponse;
 import com.gaspar.dto.BookResponse;
+import com.gaspar.exception.GeneralExeption;
 import com.gaspar.models.Book;
 import com.gaspar.repository.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +49,7 @@ public class BookService {
         try {
             bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(save), BookResponse.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new GeneralExeption("Problema de objeto", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
     }
@@ -70,7 +71,7 @@ public class BookService {
         try {
             bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(bookObtain), BookResponse.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new GeneralExeption("Problema de objeto", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         return new ResponseEntity<>(bookResponse, HttpStatus.OK);
@@ -115,13 +116,13 @@ public class BookService {
 //                findField.setAccessible(true);
 //                ReflectionUtils.setField(findField, bookObtain, value);
 //            });
-            System.err.println(" actualizado: " + bookObtain);
+            log.info(" actualizado: " + bookObtain);
 
         BookResponse bookResponse = null;
         try {
             bookResponse = objectMapper.readValue(objectMapper.writeValueAsString(bookObtain), BookResponse.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new GeneralExeption("Problema de objeto", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         return  new ResponseEntity<>(bookResponse, HttpStatus.OK);
@@ -147,7 +148,7 @@ public class BookService {
 
         Field findField = ReflectionUtils.findField(Book.class, sortStr);
         if (findField == null) {
-            System.err.println("Columna " + sortStr + " no existe");
+            log.info("Columna " + sortStr + " no existe");
              sortStr = "title";
         }
 
@@ -160,12 +161,12 @@ public class BookService {
 
         Boolean showUnavaible = unavailable;
 
-        if (showUnavaible) {
-            System.err.println("muestra todo");
+        if (Boolean.TRUE.equals(showUnavaible)) {
+            log.info("muestra todo");
             respuesta.setContent(findAll.getContent());
         } else {
-            System.err.println("muestra restringido");
-            respuesta.setContent(findAll.getContent().stream().filter(f -> f.getAvailable()).collect(Collectors.toList()));
+            log.info("muestra restringido");
+            respuesta.setContent(findAll.getContent().stream().filter(Book::getAvailable).collect(Collectors.toList()));
         }
 
 

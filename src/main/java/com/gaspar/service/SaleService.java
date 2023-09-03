@@ -43,17 +43,17 @@ public class SaleService {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Book book = bookService.getBook(salesRequest.getBookId()).orElse(null);
         if(isNull(book)){
-            System.err.println("Libro no existe");
+            log.info("Libro no existe");
             throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
         }
 
-        if(!book.getAvailable()){
-            System.err.println("Libro no disponible");
+        if(!Boolean.TRUE.equals(book.getAvailable())){
+            log.info("Libro no disponible");
             throw new GeneralExeption("Libro no disponible", HttpStatus.NOT_ACCEPTABLE);
         }
 
         if(book.getStock()<1){
-            System.err.println("Libro no existe");
+            log.info("Libro sin existencia");
             throw new GeneralExeption("Libro sin existencia", HttpStatus.INSUFFICIENT_STORAGE);
         }
 

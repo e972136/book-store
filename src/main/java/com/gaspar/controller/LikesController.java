@@ -37,8 +37,6 @@ public class LikesController implements Serializable {
     @PostMapping
     ResponseEntity<LikeResponse> post(@Valid @RequestBody LikeRequest likeRequest){
         try {
-//            LikeResponse save = service.post(likeRequest);
-
             return service.post(likeRequest);
         }
         catch (RuntimeException e){
