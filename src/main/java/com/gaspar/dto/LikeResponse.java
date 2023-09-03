@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 public class LikeResponse {
      Integer bookId;
-     List<String> customersEmail;
+     Set<String> customersEmail;
      Integer likes;
 }

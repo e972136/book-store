@@ -10,7 +10,11 @@ public class GeneralExeption extends RuntimeException{
 
     public GeneralExeption(String message,HttpStatus httpStatus) {
         super(message);
-        this.message = "{\"error\" : \""+message+"\"}";
+//        this.message = "{\"error\" : \""+message+"\"}";
+        this.message = "{\n" +
+                "\"errorCode\":\""+ httpStatus +"\",\n" +
+                "\"error\":\""+message+"\"\n" +
+                "}";
         this.httpStatus = httpStatus;
     }
 

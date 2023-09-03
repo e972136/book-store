@@ -7,6 +7,7 @@ package com.gaspar.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,12 +31,26 @@ public class Likes implements Serializable {
     @GeneratedValue
     Integer id;
 
-//    @OneToOne
+    String customerEmail;
+
+    public Likes(Integer id, String customerEmail) {
+        this.id = id;
+        this.customerEmail = customerEmail;
+    }
+
+
+    //    @OneToOne
 //    @MapsId
 //    @JoinColumn(name = "book_id")
 //    Book book;
 
-    Integer bookId;
-    String customerEmail;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "bookId",nullable = false)
+    @JsonBackReference
+    private Book book;
+
+
+
 
 }

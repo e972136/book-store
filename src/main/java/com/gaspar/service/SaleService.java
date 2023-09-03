@@ -6,7 +6,7 @@
 package com.gaspar.service;
 
 import com.gaspar.exception.GeneralExeption;
-import com.gaspar.dto.TransactionDto;
+import com.gaspar.dto.SalesRequest;
 import com.gaspar.dto.SaleResponse;
 import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static java.util.Objects.isNull;
 
 /**
  *
@@ -37,28 +39,28 @@ public class SaleService {
     }
 
     @Transactional
-    public SaleResponse newSale(TransactionDto transactionDto) {
+    public SaleResponse newSale(SalesRequest salesRequest) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Book book = bookService.getBook(transactionDto.getBookId()).orElse(null);
-        if(book == null){
+        Book book = bookService.getBook(salesRequest.getBookId()).orElse(null);
+        if(isNull(book)){
             System.err.println("Libro no existe");
             throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
         }
 
         if(!book.getAvailable()){
             System.err.println("Libro no disponible");
-            throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
+            throw new GeneralExeption("Libro no disponible", HttpStatus.NOT_ACCEPTABLE);
         }
 
         if(book.getStock()<1){
             System.err.println("Libro no existe");
-            throw new GeneralExeption("Libro sin existencia", HttpStatus.BAD_REQUEST);
+            throw new GeneralExeption("Libro sin existencia", HttpStatus.INSUFFICIENT_STORAGE);
         }
 
         book.setStock(book.getStock()-1);
 
         Sale sale = Sale.builder()
-                .customerEmail(transactionDto.getCustomerEmail())
+                .customerEmail(salesRequest.getCustomerEmail())
                 .price(book.getSalePrice())
                 .dateOfSale(LocalDateTime.now())
                 .book(book)

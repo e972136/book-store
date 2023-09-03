@@ -41,9 +41,9 @@ public class Book implements Serializable {
         this.available = available;
     }
 
-//    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 //    @PrimaryKeyJoinColumn
-//    private Likes like;
+    private List<Likes> like;
 
     @Override
     public String toString(){

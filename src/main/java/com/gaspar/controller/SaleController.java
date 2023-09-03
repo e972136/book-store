@@ -5,7 +5,7 @@
  */
 package com.gaspar.controller;
 
-import com.gaspar.dto.TransactionDto;
+import com.gaspar.dto.SalesRequest;
 import com.gaspar.dto.SaleResponse;
 import com.gaspar.service.SaleService;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +31,10 @@ public class SaleController {
     private final SaleService service;
     
     @PostMapping
-    ResponseEntity<SaleResponse> newSale(@Valid @RequestBody TransactionDto transactionDto){
+    ResponseEntity<SaleResponse> newSale(@Valid @RequestBody SalesRequest salesRequest){
         SaleResponse newSale=null;
         try {
-            newSale = service.newSale(transactionDto);
+            newSale = service.newSale(salesRequest);
         }
         catch (RuntimeException e){
             log.info(""+e);

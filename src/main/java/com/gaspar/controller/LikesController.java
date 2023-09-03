@@ -5,13 +5,13 @@
  */
 package com.gaspar.controller;
 
+import com.gaspar.dto.LikeRequest;
 import com.gaspar.dto.LikeResponse;
-import com.gaspar.dto.TransactionDto;
-import com.gaspar.models.Likes;
+import com.gaspar.dto.SalesRequest;
 import com.gaspar.service.LikesService;
 
 import java.io.Serializable;
-import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,10 +35,11 @@ public class LikesController implements Serializable {
     private final LikesService service;
  
     @PostMapping
-    ResponseEntity<LikeResponse> post(@Valid @RequestBody TransactionDto transactionDto){
+    ResponseEntity<LikeResponse> post(@Valid @RequestBody LikeRequest likeRequest){
         try {
-            LikeResponse save = service.post(transactionDto);
-            return new ResponseEntity<>(save,HttpStatus.CREATED);
+//            LikeResponse save = service.post(likeRequest);
+
+            return service.post(likeRequest);
         }
         catch (RuntimeException e){
             log.info(""+e);

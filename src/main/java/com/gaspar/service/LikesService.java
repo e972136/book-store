@@ -5,24 +5,24 @@
  */
 package com.gaspar.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gaspar.dto.LikeRequest;
 import com.gaspar.dto.LikeResponse;
-import com.gaspar.dto.TransactionDto;
-import com.gaspar.dto.Utils;
+import com.gaspar.dto.SalesRequest;
 import com.gaspar.exception.GeneralExeption;
 import com.gaspar.models.Book;
 import com.gaspar.models.Likes;
 import com.gaspar.repository.LikesRepository;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
+
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,34 +37,31 @@ public class LikesService {
 
     private final LikesRepository repository;
     private final BookService bookService;
-    
-    @Transactional
-    public LikeResponse post(TransactionDto transactionDto) {
-        Book book = bookService.getBook(transactionDto.getBookId()).orElse(null);
-        if(book == null){
-            System.err.println("Libro no existe");
-            throw new GeneralExeption("Libro no existe", HttpStatus.BAD_REQUEST);
-        }
 
+    @Transactional
+    public ResponseEntity<LikeResponse> post(LikeRequest likeRequest) {
+        Book book = bookService.getBook(likeRequest.getBookId()).orElseThrow(() -> new IllegalStateException("Id no existe"));
         if(book.getAvailable()==false){
             System.err.println("Libro no existe");
             throw new GeneralExeption("Libro no disponible", HttpStatus.BAD_REQUEST);
         }
-
-        if(book.getStock()<1){
-            System.err.println("Libro no existe");
-            throw new GeneralExeption("Libro sin existencia", HttpStatus.BAD_REQUEST);
-        }
         Likes likes = Likes.builder()
-                .bookId(transactionDto.getBookId())
-                .customerEmail(transactionDto.getCustomerEmail()).build();
+                .customerEmail(likeRequest.getCustomerEmail())
+                .book(book)
+                .build();
         repository.save(likes);
 
-        List<Likes> bybookId = repository.findBybookId(transactionDto.getBookId());
-        List<String> collect = bybookId.stream().map(r -> r.getCustomerEmail()).collect(Collectors.toList());
+        List<Likes> todosLikes = repository.findBybookId(book.getId());
 
-        return LikeResponse.of(book.getId(),collect,bybookId.size());
+        Set<String> collect = todosLikes
+                .stream()
+                .map(l -> l.getCustomerEmail())
+                .collect(Collectors.toSet());
+
+        LikeResponse likeResponse = LikeResponse.of(book.getId(),collect,todosLikes.size());
+
+
+
+        return new ResponseEntity<>(likeResponse,HttpStatus.CREATED);
     }
-
-
 }
