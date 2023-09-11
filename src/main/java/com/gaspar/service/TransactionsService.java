@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ public class TransactionsService {
         }
         List<Sale> booksInfo = saleService.getBooksInfo(id);
         Double totalRevenue = booksInfo.stream().map(Sale::getPrice).reduce(0.0, (sub, ele) -> sub + ele);
-        Set<LocalDateTime> saleDates = booksInfo.stream().map(Sale::getDateOfSale).collect(Collectors.toSet());
+        Set<LocalDate> saleDates = booksInfo.stream().map(Sale::getDateOfSale).collect(Collectors.toSet());
         Set<String> customers = booksInfo.stream().map(Sale::getCustomerEmail).collect(Collectors.toSet());
 
         respuesta.setBookId(id);

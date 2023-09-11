@@ -1,0 +1,30 @@
+server:
+  port: 8000
+  error:
+    include-message: always
+spring:
+  h2:
+    console:
+      enabled: true
+    settings.web-allow-others: true
+
+  datasource:
+    url: jdbc:h2:mem:booksDB
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+#    generate-unique-name: false
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+#server.port = 8000*
+#spring.datasource.name=booksDB*
+#spring.datasource.generate-unique-name=false
+#spring.h2.console.enabled=true*
+#spring.datasource.url=jdbc:h2:mem:booksDB*
+#
+#server.error.include-message=always*
+##Accesar desde fuera
+#spring.h2.console.settings.web-allow-others=true*
+#
+##http://localhost:8000/h2-console/

@@ -12,7 +12,7 @@ import com.gaspar.models.Book;
 import com.gaspar.models.Sale;
 import com.gaspar.repository.SaleRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class SaleService {
         Sale sale = Sale.builder()
                 .customerEmail(salesRequest.getCustomerEmail())
                 .price(book.getSalePrice())
-                .dateOfSale(LocalDateTime.now())
+                .dateOfSale(LocalDate.now())
                 .book(book)
                 .build();
         Sale save = repository.save(sale);

@@ -6,7 +6,7 @@
 package com.gaspar.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,7 +31,7 @@ public class Sale  implements Serializable{
    Integer id;
    String customerEmail;
    Double price;
-   LocalDateTime dateOfSale;
+   LocalDate dateOfSale;
 
    @ManyToOne(optional = false)
    @JoinColumn(name = "bookId",nullable = false)
